@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sentinel — AI Ransomware Detection & Early-Warning System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="grain"></div>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="#top" class="logo"><span class="logo-mark">◈</span> SENTINEL</div>
+    <div class="nav-links">
+      <a href="#problem">Problem</a>
+      <a href="#pipeline">Pipeline</a>
+      <a href="#demo">Live Demo</a>
+      <a href="#roadmap">Roadmap</a>
+      <a href="#stack">Stack</a>
+    </div>
+    <div class="nav-status"><span class="dot dot-live"></span> monitoring active</div>
+  </div>
+</nav>
+
+<header id="top" class="hero">
+  <div class="hero-inner">
+    <p class="eyebrow">PROJECT 87 · FINAL-YEAR CAPSTONE · SEM V–VII</p>
+    <h1>AI-Based Ransomware Detection<br><span class="hl">&amp; Early-Warning System</span></h1>
+    <p class="hero-sub">
+      Signature-based antivirus reacts after files are already encrypted. Sentinel watches
+      behaviour instead — file-access bursts, mass renames, entropy drift, rogue processes —
+      and raises an explainable alert while there's still time to act.
+    </p>
+    <div class="hero-cta">
+      <a href="#demo" class="btn btn-primary">Watch it detect a threat →</a>
+      <a href="#pipeline" class="btn btn-ghost">See the pipeline</a>
+    </div>
+  </div>
+
+  <div class="hero-panel">
+    <div class="panel-head">
+      <span class="panel-title">ENTROPY PULSE — /home/user/documents</span>
+      <span class="badge" id="hero-badge">NOMINAL</span>
+    </div>
+    <canvas id="pulse-canvas" width="640" height="180"></canvas>
+    <div class="hero-panel-foot">
+      <div class="mini-stat"><span class="mini-label">Shannon entropy</span><span class="mini-val" id="entropy-val">4.02</span></div>
+      <div class="mini-stat"><span class="mini-label">Rename rate</span><span class="mini-val" id="rename-val">2 /min</span></div>
+      <div class="mini-stat"><span class="mini-label">Risk score</span><span class="mini-val" id="risk-val">08</span></div>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <section id="problem" class="section">
+    <div class="section-head">
+      <span class="tag">01 — THE PROBLEM</span>
+      <h2>Damage happens before the signature exists.</h2>
+    </div>
+    <div class="problem-grid">
+      <p class="problem-copy">
+        A new ransomware variant has no antivirus signature on day zero. By the time one is
+        written and distributed, the variant has already walked through the file system —
+        encrypting, renaming, deleting shadow copies — and the damage is done. What every
+        variant <em>does</em> share, though, is behaviour: files change too fast, entropy jumps
+        as plaintext turns to ciphertext, and processes start touching files they've never
+        touched before. Sentinel is built to notice that pattern, not the file hash.
+      </p>
+      <div class="indicator-list">
+        <div class="indicator"><span class="indicator-icon">⌁</span><div><b>Entropy drift</b><p>Plaintext → ciphertext spikes randomness per file</p></div></div>
+        <div class="indicator"><span class="indicator-icon">✂</span><div><b>Mass rename / delete</b><p>Extensions changed in bulk, shadow copies wiped</p></div></div>
+        <div class="indicator"><span class="indicator-icon">⇄</span><div><b>Abnormal I/O bursts</b><p>Read-modify-write cycles far outside baseline</p></div></div>
+        <div class="indicator"><span class="indicator-icon">☍</span><div><b>Atypical process calls</b><p>Unfamiliar binaries issuing file-system syscalls</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="pipeline" class="section section-dark">
+    <div class="section-head">
+      <span class="tag">02 — HOW IT WORKS</span>
+      <h2>Five stages, from raw event to explained alert.</h2>
+    </div>
+    <div class="pipeline">
+      <div class="pipe-step">
+        <span class="pipe-index">1</span>
+        <h3>Collect</h3>
+        <p>A lightweight agent watches file events, process calls and I/O — on safe public datasets and isolated synthetic traces, never live malware.</p>
+      </div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-step">
+        <span class="pipe-index">2</span>
+        <h3>Engineer features</h3>
+        <p>Access frequency, rename/delete rate, entropy deltas and I/O pattern windows are computed per host, per minute.</p>
+      </div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-step">
+        <span class="pipe-index">3</span>
+        <h3>Classify</h3>
+        <p>Logistic Regression, Random Forest, XGBoost, SVM and a neural model vote on benign vs. malicious, tuned for class imbalance.</p>
+      </div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-step">
+        <span class="pipe-index">4</span>
+        <h3>Explain</h3>
+        <p>SHAP / LIME surface exactly which features drove a high-risk call, so an analyst can trust — or override — the alert.</p>
+      </div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-step">
+        <span class="pipe-index">5</span>
+        <h3>Warn</h3>
+        <p>The dashboard raises a ranked, explained alert with an event timeline — before large-scale encryption completes.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="demo" class="section">
+    <div class="section-head">
+      <span class="tag">03 — LIVE DEMO</span>
+      <h2>Simulated monitoring dashboard.</h2>
+      <p class="section-note">Synthetic event stream for demonstration — no real files, hosts, or malware are involved. Trigger a mock incident to see detection and explanation happen live.</p>
+    </div>
+
+    <div class="dash">
+      <div class="dash-toolbar">
+        <div class="dash-toolbar-left">
+          <span class="dot dot-live"></span>
+          <span id="stream-status">watching host <b>WKSTN-04</b> · synthetic stream</span>
+        </div>
+        <button id="trigger-btn" class="btn btn-danger">Simulate ransomware burst</button>
+      </div>
+
+      <div class="dash-grid">
+
+        <div class="dash-card">
+          <div class="dash-card-head">Live event feed</div>
+          <div class="event-feed" id="event-feed"></div>
+        </div>
+
+        <div class="dash-card dash-card-center">
+          <div class="dash-card-head">Risk score</div>
+          <div class="gauge-wrap">
+            <svg id="gauge" viewBox="0 0 200 120" class="gauge-svg">
+              <path d="M20,110 A80,80 0 0,1 180,110" fill="none" stroke="#232B3A" stroke-width="14" stroke-linecap="round"/>
+              <path id="gauge-arc" d="M20,110 A80,80 0 0,1 180,110" fill="none" stroke="#4FD8B8" stroke-width="14" stroke-linecap="round" stroke-dasharray="251.3" stroke-dashoffset="226.2"/>
+            </svg>
+            <div class="gauge-num" id="gauge-num">08</div>
+            <div class="gauge-label" id="gauge-label">LOW RISK</div>
+          </div>
+          <div class="verdict" id="verdict-line">No malicious behaviour observed in current window.</div>
+        </div>
+
+        <div class="dash-card">
+          <div class="dash-card-head">Why this score — top features</div>
+          <div class="shap" id="shap-list"></div>
+        </div>
+
+      </div>
+
+      <div class="dash-card timeline-card">
+        <div class="dash-card-head">Event timeline</div>
+        <div class="timeline" id="timeline"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="roadmap" class="section section-dark">
+    <div class="section-head">
+      <span class="tag">04 — SEMESTER ROADMAP</span>
+      <h2>Three semesters, one system, built in order.</h2>
+    </div>
+    <div class="roadmap">
+      <div class="road-stage">
+        <div class="road-head">
+          <span class="road-sem">SEM V</span>
+          <h3>Project I — Foundation</h3>
+        </div>
+        <ul>
+          <li>Survey ransomware families &amp; behavioural detection literature</li>
+          <li>Define threat model and system architecture (SRS)</li>
+          <li>Acquire &amp; preprocess public benign/ransomware behaviour datasets</li>
+          <li>Feature engineering + baseline ML models</li>
+        </ul>
+        <div class="road-out"><b>Deliverables</b> — curated dataset, baseline model, threat/feature analysis, SRS, architecture doc, Project-I report</div>
+      </div>
+      <div class="road-stage">
+        <div class="road-head">
+          <span class="road-sem">SEM VI</span>
+          <h3>Project II — Detection Engine</h3>
+        </div>
+        <ul>
+          <li>Advanced ML/DL models with class-imbalance handling</li>
+          <li>Safe event-monitoring agent + detection API</li>
+          <li>SHAP/LIME explainability layer</li>
+          <li>Early-warning logic and controlled validation</li>
+        </ul>
+        <div class="road-out"><b>Deliverables</b> — detection engine, monitoring prototype, XAI explanations, evaluation report, draft paper, Project-II report</div>
+      </div>
+      <div class="road-stage">
+        <div class="road-head">
+          <span class="road-sem">SEM VII</span>
+          <h3>Project III — Product &amp; Publication</h3>
+        </div>
+        <ul>
+          <li>Full analyst dashboard + model/API optimisation</li>
+          <li>Extensive benign/synthetic workload testing</li>
+          <li>Packaging, documentation, user guide</li>
+          <li>Publication / patent / open-source draft</li>
+        </ul>
+        <div class="road-out"><b>Deliverables</b> — working early-warning prototype, validated results, user guide, dissertation, publication draft</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="stack" class="section">
+    <div class="section-head">
+      <span class="tag">05 — RESOURCES &amp; STACK</span>
+      <h2>What it's built with, what it needs.</h2>
+    </div>
+    <div class="stack-grid">
+      <div class="stack-col">
+        <h4>Models &amp; ML</h4>
+        <div class="chips"><span>Scikit-learn</span><span>TensorFlow</span><span>PyTorch</span><span>XGBoost</span><span>SHAP</span><span>LIME</span></div>
+      </div>
+      <div class="stack-col">
+        <h4>Data &amp; API</h4>
+        <div class="chips"><span>Pandas</span><span>NumPy</span><span>Flask</span><span>FastAPI</span><span>SQLite</span><span>PostgreSQL</span></div>
+      </div>
+      <div class="stack-col">
+        <h4>Infra &amp; tooling</h4>
+        <div class="chips"><span>Docker</span><span>Git / GitHub</span><span>Isolated VM (synthetic testing)</span></div>
+      </div>
+      <div class="stack-col">
+        <h4>Recommended hardware</h4>
+        <div class="chips"><span>16 GB RAM laptop/desktop</span><span>Secondary VM (optional)</span><span>External storage (optional)</span></div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div>SENTINEL — AI-Based Ransomware Detection &amp; Early-Warning System · Final-Year Capstone, Project 87</div>
+  <div class="footer-note">All data on this page is synthetic and generated client-side for demonstration purposes.</div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
